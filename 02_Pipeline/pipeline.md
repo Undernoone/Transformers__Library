@@ -4,8 +4,8 @@
 
 ### 导入所需库
 
-```
-python复制编辑from PIL.ImageDraw import ImageDraw
+```python
+from PIL.ImageDraw import ImageDraw
 from transformers.pipelines import SUPPORTED_TASKS
 from pprint import pprint
 from transformers import pipeline, QuestionAnsweringPipeline
@@ -18,11 +18,8 @@ from transformers import pipeline, QuestionAnsweringPipeline
 
 ### 查看支持的任务类型
 
-```
+```python
 python
-
-
-复制编辑
 pprint(list(SUPPORTED_TASKS.keys()), width=100)  # 查看Pipeline支持的任务类型
 ```
 
@@ -30,8 +27,8 @@ pprint(list(SUPPORTED_TASKS.keys()), width=100)  # 查看Pipeline支持的任务
 
 ### 查看任务类型及其对应的模型
 
-```
-python复制编辑for k, v in SUPPORTED_TASKS.items():  # 查看Pipeline支持的任务类型对应的模型名称
+```python
+for k, v in SUPPORTED_TASKS.items():  # 查看Pipeline支持的任务类型对应的模型名称
     print(f"{k}: {v}", end="\n\n")
 ```
 
@@ -40,16 +37,16 @@ python复制编辑for k, v in SUPPORTED_TASKS.items():  # 查看Pipeline支持�
 
 ### 文本分类任务
 
-```
-python复制编辑pipe_for_text_classification = pipeline("text-classification", device=0)  # 使用默认model:DistilBertForSequenceClassification
+```python
+pipe_for_text_classification = pipeline("text-classification", device=0)  # 使用默认model:DistilBertForSequenceClassification
 print(pipe_for_text_classification("I am a good person."), "\n", pipe_for_text_classification("I am a bad person."))
 ```
 
 - `pipeline("text-classification", device=0)`: 这里创建了一个文本分类任务的管道对象。`pipeline`函数自动加载默认的文本分类模型（`DistilBertForSequenceClassification`），并将计算任务分配到设备0（通常是GPU）。
 - `print(pipe_for_text_classification("I am a good person."), "\n", pipe_for_text_classification("I am a bad person."))`: 使用文本分类管道对两条文本进行分类，并打印结果。
 
-```
-python复制编辑model = "uer/roberta-base-finetuned-dianping-chinese"  # 如果不指定model则会使用默认model:DistilBertForSequenceClassification
+```python
+model = "uer/roberta-base-finetuned-dianping-chinese"  # 如果不指定model则会使用默认model:DistilBertForSequenceClassification
 tokenizer = "uer/roberta-base-finetuned-dianping-chinese"  # 如果不指定tokenizer则会使用默认tokenizer:RobertaTokenizer
 pipe_for_text_classification_model = pipeline("text-classification", model, tokenizer, device=0)
 print(pipe_for_text_classification_model("I am a good person."), "\n", pipe_for_text_classification_model("I am a bad person."))
@@ -62,8 +59,8 @@ print(pipe_for_text_classification_model("I am a good person."), "\n", pipe_for_
 
 ### 问答任务
 
-```
-python复制编辑pipe_for_question_answering = pipeline("question-answering", model="uer/roberta-base-chinese-extractive-qa", device=0)
+```python
+pipe_for_question_answering = pipeline("question-answering", model="uer/roberta-base-chinese-extractive-qa", device=0)
 print(pipe_for_question_answering(question="中国的首都是哪里？", context="中国的首都是北京", max_answer_len=3))
 ```
 
@@ -72,8 +69,8 @@ print(pipe_for_question_answering(question="中国的首都是哪里？", contex
 
 ### 目标检测任务
 
-```
-python复制编辑from transformers import pipeline
+```python
+from transformers import pipeline
 from PIL import Image, ImageDraw
 
 model = "google/owlvit-base-patch32"
@@ -93,8 +90,8 @@ print(predictions)
 
 ### 在图像上绘制检测结果
 
-```
-python复制编辑if predictions:
+```python
+if predictions:
     draw = ImageDraw.Draw(image)  # 创建绘图对象
     for prediction in predictions:
         box = prediction['box']  # 获取检测框的位置

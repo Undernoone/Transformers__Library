@@ -6,7 +6,8 @@ Transformers库的学习笔记。
 
 ## 目录
 
-| 组件名称 | 笔记                                    | 官方文档                                                     |
-| -------- | --------------------------------------- | ------------------------------------------------------------ |
-| Pipeline | [02_Pipelline](02_Pipeline/pipeline.md) | [Pipeline](https://huggingface.co/docs/transformers/main/en/quicktour#pipeline) |
+| 组件名称  | 笔记                                      | 官方文档                                                     |
+| --------- | ----------------------------------------- | ------------------------------------------------------------ |
+| Pipeline  | [02_Pipelline](02_Pipeline/pipeline.md)   | [Pipeline](https://huggingface.co/docs/transformers/main/en/quicktour#pipeline) |
+| Tokenizer | [03_Tokenizer](03_Tokenizer/tokenizer.md) | [Tokenizer](https://huggingface.co/docs/transformers/main/en/quicktour#autotokenizer) |
 
