@@ -1,4 +1,4 @@
-# Transformers pipline库
+# Transformers pipline库 [Pipeline](https://huggingface.co/docs/transformers/main/en/quicktour#pipeline)
 
 这段代码涉及使用`transformers`库的多个功能，包括文本分类、问答任务和目标检测。代码中使用了几个常见的Python库，如`PIL`（Python Imaging Library）和`transformers`，以及一些基本的Python语法。接下来，我将逐行解析这段代码并解释每一行的功能。
 

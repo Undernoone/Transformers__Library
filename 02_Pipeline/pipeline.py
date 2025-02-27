@@ -7,6 +7,9 @@ from PIL.ImageDraw import ImageDraw
 from transformers.pipelines import SUPPORTED_TASKS
 from pprint import pprint
 from transformers import pipeline, QuestionAnsweringPipeline
+import torch
+from transformers import pipeline
+from datasets import load_dataset, Audio
 
 pprint(list(SUPPORTED_TASKS.keys()), width=100) # 查看Pipeline支持的任务类型
 
@@ -47,3 +50,15 @@ if predictions:
         draw.rectangle([xmin, ymin, xmax, ymax], outline="red", width=3)
         draw.text((xmin, ymin), f"{label}: {score:.2f}", fill="red")
 image.show()
+
+# 语音识别
+speech_recognizer = pipeline("automatic-speech-recognition", model="facebook/wav2vec2-base-960h", device=0)
+
+dataset = load_dataset("PolyAI/minds14", name="en-US", split="train", trust_remote_code=True)
+
+dataset = dataset.cast_column("audio", Audio(sampling_rate=speech_recognizer.feature_extractor.sampling_rate))
+
+audio_samples = dataset[:4]["audio"]
+result = speech_recognizer(audio_samples)
+
+
