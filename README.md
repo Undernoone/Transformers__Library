@@ -41,6 +41,6 @@ root
 
 ![](./Image/HuggingFace_指引_1.png)
 
-![HuggingFace_指引_2](D:\Study_Date\LLMs_study\Transformers库\Image\HuggingFace_指引_2.png)
+![](./Image/HuggingFace_指引_2.png)
 
 ![](./Image/HuggingFace_指引_3.png)
