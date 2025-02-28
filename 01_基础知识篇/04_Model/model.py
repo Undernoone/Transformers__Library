@@ -12,7 +12,6 @@ model = AutoModel.from_pretrained("./rbt3") # 加载预训练模型，这里使�
 print("Model config:", model.config) # 可以查看模型的配置信息
 
 config = AutoConfig.from_pretrained("./rbt3") # 加载模型配置信息，之后便可以修改模型的配置
-
 sentence = "I am studying NLP."
 
 tokenizer = AutoTokenizer.from_pretrained("./rbt3")
