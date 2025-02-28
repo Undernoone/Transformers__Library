@@ -3,13 +3,14 @@ Author: Coder729
 Date: 2025/2/26
 Description: transformers pipeline
 """
+import torch
 from PIL.ImageDraw import ImageDraw
 from transformers.pipelines import SUPPORTED_TASKS
 from pprint import pprint
 from transformers import pipeline, QuestionAnsweringPipeline
-import torch
-from transformers import pipeline
 from datasets import load_dataset, Audio
+from transformers import pipeline
+from PIL import Image,ImageDraw
 
 pprint(list(SUPPORTED_TASKS.keys()), width=100) # 查看Pipeline支持的任务类型
 
@@ -30,8 +31,6 @@ pipe_for_question_answering = pipeline("question-answering", model="uer/roberta-
 print(pipe_for_question_answering(question="中国的首都是哪里？", context="中国的首都是北京", max_answer_len=3))
 
 # 目标检测
-from transformers import pipeline
-from PIL import Image,ImageDraw
 
 model = "google/owlvit-base-patch32"
 pipe_for_object_detection = pipeline("zero-shot-object-detection", model=model, device=0)
