@@ -29,21 +29,31 @@ root
 
 ## 目录
 
-| 组件名称  | 笔记                                                   | 官方文档                                                     | 编辑时间  |
-| --------- | ------------------------------------------------------ | ------------------------------------------------------------ | --------- |
-| Pipeline  | [02_Pipelline](01_基础知识篇/02_Pipeline/pipeline.md)  | [Pipeline](https://huggingface.co/docs/transformers/main/en/quicktour#pipeline) | 2025/2/26 |
-| Tokenizer | [03_Tokenizer](01_基础知识篇/03_Tokenizer/tokenizer.md)              | [Tokenizer](https://huggingface.co/docs/transformers/main/en/quicktour#autotokenizer) | 2025/2/26 |
-| Model     | [04_Model](01_基础知识篇/04_Model/model.md)&[实战](01_基础知识篇/04_Model/实战.md) | [AutoModel](https://huggingface.co/docs/transformers/main/en/quicktour#automodel) | 2025/2/27 |
-| Datasets  | [05_Datasets](01_基础知识篇/05_Datasets.md)                          |                                                              |           |
-| Evaluate  | [06_Evaluate](01_基础知识篇/06_Evaluate.md)                          |                                                              | 2025/2/27 |
+### 01_基础知识篇
 
-## 修改Transformers库的默认下载地址
+| 组件名称  | 笔记                                                         | 官方文档                                                     | 编辑时间  |
+| --------- | ------------------------------------------------------------ | ------------------------------------------------------------ | --------- |
+| Pipeline  | [02_Pipelline](01_基础知识篇/02_Pipeline/pipeline.md)        | [Pipeline](https://huggingface.co/docs/transformers/main/en/quicktour#pipeline) | 2025/2/26 |
+| Tokenizer | [03_Tokenizer](01_基础知识篇/03_Tokenizer/tokenizer.md)      | [Tokenizer](https://huggingface.co/docs/transformers/main/en/quicktour#autotokenizer) | 2025/2/26 |
+| Model     | [04_Model](01_基础知识篇/04_Model/model.md)&[实战](01_基础知识篇/04_Model/实战.md) | [AutoModel](https://huggingface.co/docs/transformers/main/en/quicktour#automodel) | 2025/2/27 |
+| Datasets  | [05_Datasets](01_基础知识篇/05_Datasets/datasets.md)         |                                                              |           |
+| Evaluate  | [06_Evaluate](01_基础知识篇/06_Evaluate/evaluate.md)         |                                                              | 2025/2/27 |
+| Trainer   | [07_Trainer](01_基础知识篇/07_Trainer/trainer.md)            |                                                              | 2025/2/28 |
+
+## 02_实战演练篇
+
+| 组件名称         | 笔记                                                         | 官方文档                                                     | 编辑时间  |
+| ---------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | --------- |
+| 如何降低显存占用 | [01_降低显存占用](02_实战演练篇/01_如何降低显存占用/降低显存占用实战.md) | [Methods and tools for efficient training on a single GPU](https://huggingface.co/docs/transformers/perf_train_gpu_one#methods-and-tools-for-efficient-training-on-a-single-gpu) | 2025/2/28 |
+|                  |                                                              |                                                              |           |
+
+## 如何修改Transformers库的默认下载地址
 
 由于 `huggingface_hub` 使用了符号链接（symlinks）来优化缓存存储，这可能导致磁盘空间的消耗。如果不进行修改，默认情况下文件会被缓存到 `C:\Users\Users\.cache\huggingface` 目录中。
 
 ![](./Image/HuggingFace缓存路径修改.png)
 
-## HuggingFace可以查看不同分类任务的评价指标[06_Evaluate](06_Evaluate.md)
+## 如何查看不同分类任务的评价指标[06_Evaluate](06_Evaluate.md)
 
 ![](./Image/HuggingFace_指引_1.png)
 
