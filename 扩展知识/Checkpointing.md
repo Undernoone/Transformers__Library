@@ -6,7 +6,7 @@
 
 下面这个动图展示了一种简单策略：前向传播过程中计算节点的激活值并保存，计算下一个节点完成后丢弃中间节点的激活值，反向传播时如果有保存下来的梯度就直接使用，如果没有就使用保存下来的前一个节点的梯度重新计算当前节点的梯度再使用。
 
-![在这里插入图片描述](../../../Image/Checkpointing.gif)
+![在这里插入图片描述](../Image/Checkpointing.gif)
 
 
 
@@ -24,3 +24,4 @@ training_args_3 = TrainingArguments(
 
 [Methods and tools for efficient training on a single GPU](https://huggingface.co/docs/transformers/perf_train_gpu_one#gradient-checkpointing)
 
+[Gradient Checkpointing](https://blog.csdn.net/Solo95/article/details/131606918)

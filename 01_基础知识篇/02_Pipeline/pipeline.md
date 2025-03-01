@@ -75,7 +75,7 @@ from PIL import Image, ImageDraw
 
 model = "google/owlvit-base-patch32"
 pipe_for_object_detection = pipeline("zero-shot-object-detection", model=model, device=0)
-image_path = "image/object_detection.jpg"
+image_path = "../../Image/Object_detection.jpg"
 image = Image.open(image_path)
 predictions = pipe_for_object_detection(image, candidate_labels=["hat", "sunglasses", "book"], multi_label=True)
 print(predictions)

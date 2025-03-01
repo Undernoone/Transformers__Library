@@ -12,7 +12,7 @@ from datasets import load_dataset, Audio
 from transformers import pipeline
 from PIL import Image,ImageDraw
 
-pprint(list(SUPPORTED_TASKS.keys()), width=100) # 查看Pipeline支持的任务类型
+pprint("Pipeline支持的所有任务类型:",list(SUPPORTED_TASKS.keys()), width=100) # 查看Pipeline支持的任务类型
 
 for k, v in SUPPORTED_TASKS.items(): # 查看Pipeline支持的任务类型对应的模型名称
     print(f"{k}: {v}", end="\n\n")
@@ -31,10 +31,9 @@ pipe_for_question_answering = pipeline("question-answering", model="uer/roberta-
 print(pipe_for_question_answering(question="中国的首都是哪里？", context="中国的首都是北京", max_answer_len=3))
 
 # 目标检测
-
 model = "google/owlvit-base-patch32"
 pipe_for_object_detection = pipeline("zero-shot-object-detection", model=model, device=0)
-image_path = "image/object_detection.jpg"
+image_path = "../../Image/Object_detection.jpg"
 image = Image.open(image_path)
 predictions = pipe_for_object_detection(image, candidate_labels=["hat", "sunglasses", "book"], multi_label=True)
 print(predictions)
@@ -52,11 +51,8 @@ image.show()
 
 # 语音识别
 speech_recognizer = pipeline("automatic-speech-recognition", model="facebook/wav2vec2-base-960h", device=0)
-
 dataset = load_dataset("PolyAI/minds14", name="en-US", split="train", trust_remote_code=True)
-
 dataset = dataset.cast_column("audio", Audio(sampling_rate=speech_recognizer.feature_extractor.sampling_rate))
-
 audio_samples = dataset[:4]["audio"]
 result = speech_recognizer(audio_samples)
 
