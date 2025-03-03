@@ -1,16 +1,13 @@
 """
 Author: Coder729
-Date: 2025/3/2
-Description: 阶段策略机器阅读理解
+Date: 2025/3/3
+Description: 
 """
 from datasets import load_dataset
 from transformers import AutoTokenizer, AutoModelForQuestionAnswering,TrainingArguments, Trainer, DefaultDataCollator
 
-datasets = load_dataset("hfl/cmrc2018") # 机器阅读理解数据集，包括id、context、question、answers
 
-# 为了快速演示，我们只使用训练集的前100条数据和验证集的前50条数据,可以自行修改
-datasets["train"] = datasets["train"].select(range(100))
-datasets["validation"] = datasets["validation"].select(range(50))
+datasets = load_dataset("hfl/cmrc2018") # 机器阅读理解数据集，包括id、context、question、answers
 tokenizer = AutoTokenizer.from_pretrained("hfl/chinese-macbert-base")
 
 """
@@ -27,7 +24,9 @@ def process_function(examples):
                                    max_length=512,
                                    truncation="only_second", # 只截断context，不截断question
                                    padding="max_length",
-                                   return_offsets_mapping=True # 字符索引映射
+                                   return_offsets_mapping=True, # 字符索引映射
+                                   return_overflowing_tokens=True,
+                                   stride=128,
                                    )
     offset_mapping = tokenized_examples.pop("offset_mapping") # 提取出offset_mapping
     start_positions = []
@@ -63,10 +62,10 @@ print(tokenized_datasets)
 model = AutoModelForQuestionAnswering.from_pretrained("hfl/chinese-macbert-base")
 
 args = TrainingArguments(
-    output_dir="阶段策略机器阅读理解",
+    output_dir="model_for_qa",
     per_device_train_batch_size=32,
     gradient_accumulation_steps=32,
-    eval_strategy="epoch",
+    evaluation_strategy="epoch",
     save_strategy="epoch",
     logging_steps=10,
     num_train_epochs=2

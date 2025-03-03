@@ -56,7 +56,7 @@ tokenizer = AutoTokenizer.from_pretrained("hfl/chinese-macbert-large")
 
 # 默认配置
 training_args = TrainingArguments(
-    output_dir='./checkpoint',
+    output_dir='./降低显存占用',
     per_device_train_batch_size=32,
     per_device_eval_batch_size=32,
     num_train_epochs=1,

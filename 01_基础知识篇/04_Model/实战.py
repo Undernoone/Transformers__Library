@@ -12,7 +12,7 @@ import evaluate
 class ClassificationDataset(Dataset):
     def __init__(self) -> None:
         super().__init__()
-        self.data = pd.read_csv('./datasets/ChnSentiCorp_htl_all.csv')
+        self.data = pd.read_csv('./datasets/ChnSentiCorp_htl_all.csv') # 可以去Github上下载，也可以在datasets里面在线下载，这里我直接在Github上下载保存到了同级的目录，如果文件中没有则需要自己下载
         self.data = self.data.dropna() # 去掉空值
     def __getitem__(self, index):
         return self.data.iloc[index]["review"], self.data.iloc[index]["label"]

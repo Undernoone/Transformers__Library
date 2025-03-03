@@ -72,7 +72,7 @@ def eval_metric(pred):
 
 
 args = TrainingArguments(
-    output_dir='./model_for_ner',
+    output_dir='./命名实体识别',
     per_device_train_batch_size=32,
     per_device_eval_batch_size=64,
     eval_strategy="epoch",
