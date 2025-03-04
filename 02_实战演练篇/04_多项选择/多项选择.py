@@ -19,7 +19,8 @@ dataset["validation"] = dataset["validation"].select(range(50))
 
 tokenizer = AutoTokenizer.from_pretrained("hfl/chinese-macbert-base")
 
-def preprocess_function(examples): # examples是一个list，包括id、context、question、choice、answer
+def preprocess_function(examples): # examples是一个list，包括id、context、question、choice、answer，目的是把这个list在tokenizer除了基础的还要添加一个labels
+
     context = []
     questions_choices = []
     labels = []
