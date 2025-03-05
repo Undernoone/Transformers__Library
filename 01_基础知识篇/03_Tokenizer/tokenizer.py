@@ -19,6 +19,7 @@ print("ids_decode:",tokenizers.decode(tokenizers.encode(sentence))) # 将ids转�
 print("限制最大长度的分词:",tokenizers.tokenize(sentence,max_length=3)) # 限制最大长度
 
 # 以上方法不常用，一般直接调用tokenizers即可，tokenizers(sentence)会返回一个字典，包含ids、attention mask、token type ids等信息
+# attenion mask 表示哪些ids是padding，哪些位置是有效的token，token type ids 表示ids属于那个句子
 print("直接调用tokenizer:",tokenizers(sentence))
 
 sentences = ["我正在学习自然语言处理。", "你好，世界！","自然语言处理是一门很有趣的学科。"]

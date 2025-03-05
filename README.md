@@ -33,22 +33,23 @@ root
 
 | 组件名称  | 笔记                                                         | 官方文档                                                     | 编辑时间  |
 | --------- | ------------------------------------------------------------ | ------------------------------------------------------------ | --------- |
-| Pipeline  | [02_Pipelline](01_基础知识篇/02_Pipeline/pipeline.md)        | [Pipeline](https://huggingface.co/docs/transformers/main/en/quicktour#pipeline) | 2025/2/26 |
-| Tokenizer | [03_Tokenizer](01_基础知识篇/03_Tokenizer/tokenizer.md)      | [Tokenizer](https://huggingface.co/docs/transformers/main/en/quicktour#autotokenizer) | 2025/2/26 |
-| Model     | [04_Model](01_基础知识篇/04_Model/model.md)   [Model实战](01_基础知识篇/04_Model/实战.md) | [AutoModel](https://huggingface.co/docs/transformers/main/en/quicktour#automodel) | 2025/2/27 |
-| Datasets  | [05_Datasets](01_基础知识篇/05_Datasets/datasets.md)         |                                                              |           |
-| Evaluate  | [06_Evaluate](01_基础知识篇/06_Evaluate/evaluate.md)         |                                                              | 2025/2/27 |
-| Trainer   | [07_Trainer](01_基础知识篇/07_Trainer/trainer.md)            |                                                              | 2025/2/28 |
+| Pipeline  | [Pipelline](01_基础知识篇/02_Pipeline/pipeline.md)           | [Pipeline](https://huggingface.co/docs/transformers/main/en/quicktour#pipeline) | 2025/2/26 |
+| Tokenizer | [Tokenizer](01_基础知识篇/03_Tokenizer/tokenizer.md)         | [Tokenizer](https://huggingface.co/docs/transformers/main/en/quicktour#autotokenizer) | 2025/2/26 |
+| Model     | [Model](01_基础知识篇/04_Model/model.md)   [Model实战](01_基础知识篇/04_Model/实战.md) | [AutoModel](https://huggingface.co/docs/transformers/main/en/quicktour#automodel) | 2025/2/27 |
+| Datasets  | [Datasets](01_基础知识篇/05_Datasets/datasets.md)            |                                                              |           |
+| Evaluate  | [Evaluate](01_基础知识篇/06_Evaluate/evaluate.md)            |                                                              | 2025/2/27 |
+| Trainer   | [Trainer](01_基础知识篇/07_Trainer/trainer.md)               |                                                              | 2025/2/28 |
 
 ## 02_实战演练篇
 
 | 组件名称         | 笔记                                                         | 官方文档                                                     | 编辑时间  |
 | ---------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | --------- |
-| 如何降低显存占用 | [01_降低显存占用](02_实战演练篇/01_如何降低显存占用/降低显存占用实战.md) | [Methods and tools for efficient training on a single GPU](https://huggingface.co/docs/transformers/perf_train_gpu_one#methods-and-tools-for-efficient-training-on-a-single-gpu) | 2025/2/28 |
-| 命名实体识别     | [02_命名实体识别](02_实战演练篇/02_命名实体识别/命名实体识别.md) |                                                              | 2025/3/01 |
+| 如何降低显存占用 | [降低显存占用](02_实战演练篇/01_如何降低显存占用/降低显存占用实战.md) | [Methods and tools for efficient training on a single GPU](https://huggingface.co/docs/transformers/perf_train_gpu_one#methods-and-tools-for-efficient-training-on-a-single-gpu) | 2025/2/28 |
+| 命名实体识别     | [命名实体识别](02_实战演练篇/02_命名实体识别/命名实体识别.md) |                                                              | 2025/3/01 |
 | 机器阅读理解     | [截断策略](02_实战演练篇/03_机器阅读理解/截断策略机器阅读理解)  [滑动窗口（待完成）](02_实战演练篇/03_机器阅读理解/滑动窗口机器阅读理解) |                                                              | 2025/3/02 |
-| 多项选择         | [04_多项选择](02_实战演练篇/04_多项选择/多项选择.md)         |                                                              | 2025/3/03 |
-| 文本相似度       | [分类方法](02_实战演练篇/05_文本相似度/分类方法计算文本相似度.md)  [回归方法](02_实战演练篇/05_文本相似度/回归方法计算文本相似度.md) |                                                              | 2025/3/04 |
+| 多项选择         | [多项选择](02_实战演练篇/04_多项选择/多项选择.md)            |                                                              | 2025/3/03 |
+| 文本相似度       | [分类方法](02_实战演练篇/05_文本相似度/01_分类方法计算文本相似度)  [回归方法](02_实战演练篇/05_文本相似度/02_回归方法计算文本相似度) [回归优化](02_实战演练篇/05_文本相似度/03_回归方法过大时解决方案) |                                                              | 2025/3/04 |
+| 检索对话机器人   | [检索对话机器人（待完成）](02_实战演练篇/06_检索对话机器人/对话机器人.md) |                                                              | 2025/3/05 |
 
 ## 扩展知识
 
