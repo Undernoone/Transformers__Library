@@ -1,7 +1,7 @@
 """
 Author: Coder729
 Date: 2025/3/2
-Description: 阶段策略机器阅读理解
+Description: 截断策略机器阅读理解
 """
 from datasets import load_dataset
 from transformers import AutoTokenizer, AutoModelForQuestionAnswering,TrainingArguments, Trainer, DefaultDataCollator

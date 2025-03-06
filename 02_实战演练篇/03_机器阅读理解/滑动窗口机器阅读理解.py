@@ -7,7 +7,9 @@ from datasets import load_dataset
 from transformers import AutoTokenizer, AutoModelForQuestionAnswering,TrainingArguments, Trainer, DefaultDataCollator
 
 
-datasets = load_dataset("hfl/cmrc2018") # 机器阅读理解数据集，包括id、context、question、answers
+datasets = load_dataset("hfl/cmrc2018") # 机器阅读理解数据集，包括id、context、question、
+print(datasets)
+print(datasets["train"][0])
 tokenizer = AutoTokenizer.from_pretrained("hfl/chinese-macbert-base")
 
 """
@@ -62,7 +64,7 @@ print(tokenized_datasets)
 model = AutoModelForQuestionAnswering.from_pretrained("hfl/chinese-macbert-base")
 
 args = TrainingArguments(
-    output_dir="model_for_qa",
+    output_dir="/机器阅读理解",
     per_device_train_batch_size=32,
     gradient_accumulation_steps=32,
     evaluation_strategy="epoch",

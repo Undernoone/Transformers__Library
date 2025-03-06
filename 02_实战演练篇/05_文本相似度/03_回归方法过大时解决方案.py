@@ -104,7 +104,7 @@ class DualModel(BertPreTrainedModel):
         return ((loss,) + output) if loss is not None else output
 
 # model = DualModel.from_pretrained("D:\Study_Date\HuggingFace\cache\models--hfl--chinese-macbert-base")
-model = DualModel.from_pretrained("hfl/chinese-macbert-base")
+model = DualModel.from_pretrained("hfl/chinese-macbert-base", num_labels=1)
 acc_metric = evaluate.load("accuracy")
 f1_metric = evaluate.load("f1")
 
