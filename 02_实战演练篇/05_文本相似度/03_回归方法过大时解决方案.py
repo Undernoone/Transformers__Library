@@ -119,7 +119,7 @@ def eval_metric(eval_predict):
     return acc
 
 training_args = TrainingArguments(
-    output_dir='./向量匹配策略解决大候选样本的解决方案',
+    output_dir='./回归方法过大时解决方案',
     per_device_train_batch_size=32,
     per_device_eval_batch_size=32,
     num_train_epochs=1,
