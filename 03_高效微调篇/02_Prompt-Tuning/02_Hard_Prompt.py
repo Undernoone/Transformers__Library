@@ -29,6 +29,7 @@ tokenized_datasets = dataset.map(preprocess_function, remove_columns=dataset.col
 
 model = AutoModelForCausalLM.from_pretrained("Langboat/bloom-1b4-zh", low_cpu_mem_usage=True)
 print(sum(param.numel() for param in model.parameters()))
+print(model)
 
 # Hard Prompt Tuning
 config = PromptTuningConfig(task_type=TaskType.CAUSAL_LM,num_virtual_tokens=len(tokenizer("下面是一段人与机器人的对话。")["input_ids"]),
@@ -39,7 +40,7 @@ print(model)
 print(model.print_trainable_parameters())
 
 args = TrainingArguments(
-    output_dir="./SoftPrompt",
+    output_dir="./HardPrompt",
     num_train_epochs=1,
     per_device_train_batch_size=16,
     gradient_accumulation_steps=8,

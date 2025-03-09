@@ -28,13 +28,26 @@ def preprocess_function(examples):
 tokenized_datasets = dataset.map(preprocess_function, remove_columns=dataset.column_names)
 
 model = AutoModelForCausalLM.from_pretrained("Langboat/bloom-1b4-zh", low_cpu_mem_usage=True)
-print(sum(param.numel() for param in model.parameters()))
-print(model)
+print(sum(param.numel() for param in model.parameters())) # 查看原始模型参数量
+
 # Soft Prompt
 config = PromptTuningConfig(task_type=TaskType.CAUSAL_LM,num_virtual_tokens=10)
 model = get_peft_model(model, config)
 print(model.print_trainable_parameters())
 print(model)
+'''
+可以看到经过Peft后基础模型外面加了一个PromptEmbedding
+PeftModelForCausalLM(
+  (base_model): BloomForCausalLM()
+  (prompt_encoder): ModuleDict
+  (
+    (default): PromptEmbedding
+    (
+      (embedding): Embedding(10, 2048)
+    )
+  )
+)
+'''
 
 args = TrainingArguments(
     output_dir="./SoftPrompt",
