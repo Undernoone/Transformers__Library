@@ -4,13 +4,12 @@ Date: 2025/3/8
 Description: 原始数据集有三条键值对，分别是：input, output, instruction。
              部分数据没有input。
 """
-from datasets import Dataset, load_dataset
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, Seq2SeqTrainer, \
-    Seq2SeqTrainingArguments, set_seed, DataCollatorForSeq2Seq, DataCollatorWithPadding, \
-    Trainer, TrainingArguments, AutoModelForCausalLM, pipeline
+from datasets import Dataset
+from transformers import AutoTokenizer, DataCollatorForSeq2Seq, Trainer, TrainingArguments, AutoModelForCausalLM, pipeline
 
 dataset = Dataset.load_from_disk('./alpaca_data_zh')
-dataset = dataset.select(range(min(50, len(dataset))))
+dataset = dataset.select(range(min(500, len(dataset))))
+print(dataset[0])
 tokenizer = AutoTokenizer.from_pretrained("Langboat/bloom-389m-zh")
 
 # 数据预处理
@@ -49,9 +48,9 @@ trainer = Trainer(
     data_collator=DataCollatorForSeq2Seq(tokenizer=tokenizer, padding=True),
 )
 
-trainer.train()
+# trainer.train()
 
 # 预测
-pipeline = pipeline("text-generation",model=model, tokenizer=tokenizer, device=0)
+pipeline = pipeline("text-generation",model='对话机器人/checkpoint-4', tokenizer=tokenizer, device=0)
 ipt = "Human: {}\n{}".format("怎么学习自然语言处理", "").strip() + "\n\nAssistant: "
 print(pipeline(ipt, max_length=64))

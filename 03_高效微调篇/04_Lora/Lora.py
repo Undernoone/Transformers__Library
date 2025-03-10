@@ -1,18 +1,15 @@
 """
 Author: Coder729
-Date: 2025/3/9
-Description: BitFit实战：只调节带bias的参数
+Date: 2025/3/10
+Description: 
 """
-
-from datasets import Dataset, load_dataset
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, Seq2SeqTrainer, \
-    Seq2SeqTrainingArguments, set_seed, DataCollatorForSeq2Seq, DataCollatorWithPadding, \
+from peft import get_peft_model, TaskType, PromptTuningInit, PromptTuningConfig, PrefixTuningConfig, LoraConfig
+from datasets import Dataset
+from transformers import AutoTokenizer,DataCollatorForSeq2Seq, \
     Trainer, TrainingArguments, AutoModelForCausalLM, pipeline
 
 dataset = Dataset.load_from_disk('../../02_实战演练篇/09_对话机器人/alpaca_data_zh')
-dataset = dataset.select(range(min(500, len(dataset))))
 tokenizer = AutoTokenizer.from_pretrained("Langboat/bloom-1b4-zh")
-print(tokenizer)
 
 def preprocess_function(examples):
     max_length = 256
@@ -31,23 +28,19 @@ def preprocess_function(examples):
 tokenized_datasets = dataset.map(preprocess_function, remove_columns=dataset.column_names)
 
 model = AutoModelForCausalLM.from_pretrained("Langboat/bloom-1b4-zh", low_cpu_mem_usage=True)
+print(sum(param.numel() for param in model.parameters())) # 1303111680
 print(model)
-print(sum(param.numel() for param in model.parameters()))
+# Lora
+config = LoraConfig(task_type=TaskType.CAUSAL_LM, target_modules=".*\.1.*query_key_value", modules_to_save=["word_embeddings"])
+model = get_peft_model(model, config)
+print(model) # PeftModel(LoraModel(Model))
+print(model.print_trainable_parameters())
 
-# 只调节带bias的参数
-num_param = 0
-for name, param in model.named_parameters():
-    if "bias" not in name:
-        param.requires_grad = False
-    else:
-        num_param += param.numel()
-
-print(num_param)
-
+# 训练
 args = TrainingArguments(
-    output_dir="./01_BitFit",
+    output_dir="./HardPrompt",
     num_train_epochs=1,
-    per_device_train_batch_size=16,
+    per_device_train_batch_size=4,
     gradient_accumulation_steps=8,
     logging_steps=10,
 )
@@ -59,9 +52,9 @@ trainer = Trainer(
     data_collator=DataCollatorForSeq2Seq(tokenizer=tokenizer, padding=True),
 )
 
-trainer.train()
+# trainer.train()
 
 # 预测
-pipeline = pipeline("text-generation",model=model, tokenizer=tokenizer, device=0)
-ipt = "Human: {}\n{}".format("怎么学习自然语言处理", "").strip() + "\n\nAssistant: "
+pipeline = pipeline("text-generation",model="D:\Study_Date\LLMs_study\Transformers库\\03_高效微调篇\\03_PreFix\HardPrompt\checkpoint-839", tokenizer=tokenizer, device=0)
+ipt = "Human: {}\n{}".format("人工智能是什么", "").strip() + "\n\nAssistant: "
 print(pipeline(ipt, max_length=64))

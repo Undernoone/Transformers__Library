@@ -1,9 +1,9 @@
 """
 Author: Coder729
-Date: 2025/3/9
+Date: 2025/3/10
 Description: 
 """
-from peft import get_peft_model, TaskType, PromptTuningInit, PromptTuningConfig
+from peft import get_peft_model, TaskType, PromptTuningInit, PromptTuningConfig, PrefixTuningConfig
 from datasets import Dataset
 from transformers import AutoTokenizer,DataCollatorForSeq2Seq, \
     Trainer, TrainingArguments, AutoModelForCausalLM, pipeline
@@ -30,20 +30,17 @@ tokenized_datasets = dataset.map(preprocess_function, remove_columns=dataset.col
 model = AutoModelForCausalLM.from_pretrained("Langboat/bloom-1b4-zh", low_cpu_mem_usage=True)
 print(sum(param.numel() for param in model.parameters()))
 
-# Hard Prompt Tuning 与 Soft Prompt Tuning 的区别在于制定了一段文本作为Prompt，而Soft Prompt Tuning则是通过学习一个语言模型来生成Prompt。
-# tokenizer_name_or_path 指的是模型的tokenizer，只能在prompt_tuning_init为TEXT时使用。
-config = PromptTuningConfig(task_type=TaskType.CAUSAL_LM,num_virtual_tokens=len(tokenizer("下面是一段人与机器人的对话。")["input_ids"]),
-                            prompt_tuning_init=PromptTuningInit.TEXT,prompt_tuning_init_text="下面是一段人与机器人的对话。",
-                            tokenizer_name_or_path="Langboat/bloom-1b4-zh")
+# PreFix
+config = PrefixTuningConfig(task_type=TaskType.CAUSAL_LM,num_virtual_tokens=10,prefix_projection=False)
 model = get_peft_model(model, config)
 print(model)
 print(model.print_trainable_parameters())
 
 # 训练
 args = TrainingArguments(
-    output_dir="./HardPrompt",
+    output_dir="./Prefix",
     num_train_epochs=1,
-    per_device_train_batch_size=16,
+    per_device_train_batch_size=4,
     gradient_accumulation_steps=8,
     logging_steps=10,
 )
@@ -55,9 +52,9 @@ trainer = Trainer(
     data_collator=DataCollatorForSeq2Seq(tokenizer=tokenizer, padding=True),
 )
 
-trainer.train()
+# trainer.train()
 
 # 预测
-pipeline = pipeline("text-generation",model=model, tokenizer=tokenizer, device=0)
+pipeline = pipeline("text-generation",model="D:\Study_Date\LLMs_study\Transformers库\\03_高效微调篇\\03_PreFix\HardPrompt\checkpoint-839", tokenizer=tokenizer, device=0)
 ipt = "Human: {}\n{}".format("怎么学习自然语言处理", "").strip() + "\n\nAssistant: "
 print(pipeline(ipt, max_length=64))

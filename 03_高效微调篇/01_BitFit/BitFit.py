@@ -1,14 +1,14 @@
 """
 Author: Coder729
 Date: 2025/3/9
-Description: 
+Description: BitFit实战：只调节带bias的参数
 """
-from peft import get_peft_model, TaskType, PromptTuningInit, PromptTuningConfig
+
 from datasets import Dataset
-from transformers import AutoTokenizer,DataCollatorForSeq2Seq, \
-    Trainer, TrainingArguments, AutoModelForCausalLM, pipeline
+from transformers import AutoTokenizer, DataCollatorForSeq2Seq, Trainer, TrainingArguments, AutoModelForCausalLM, pipeline
 
 dataset = Dataset.load_from_disk('../../02_实战演练篇/09_对话机器人/alpaca_data_zh')
+print(dataset[0])
 tokenizer = AutoTokenizer.from_pretrained("Langboat/bloom-1b4-zh")
 
 def preprocess_function(examples):
@@ -28,29 +28,32 @@ def preprocess_function(examples):
 tokenized_datasets = dataset.map(preprocess_function, remove_columns=dataset.column_names)
 
 model = AutoModelForCausalLM.from_pretrained("Langboat/bloom-1b4-zh", low_cpu_mem_usage=True)
-print(sum(param.numel() for param in model.parameters()))
-
-# Hard Prompt Tuning 与 Soft Prompt Tuning 的区别在于制定了一段文本作为Prompt，而Soft Prompt Tuning则是通过学习一个语言模型来生成Prompt。
-# tokenizer_name_or_path 指的是模型的tokenizer，只能在prompt_tuning_init为TEXT时使用。
-config = PromptTuningConfig(task_type=TaskType.CAUSAL_LM,num_virtual_tokens=len(tokenizer("下面是一段人与机器人的对话。")["input_ids"]),
-                            prompt_tuning_init=PromptTuningInit.TEXT,prompt_tuning_init_text="下面是一段人与机器人的对话。",
-                            tokenizer_name_or_path="Langboat/bloom-1b4-zh")
-model = get_peft_model(model, config)
 print(model)
-print(model.print_trainable_parameters())
+print(sum(param.numel() for param in model.parameters())) # 1303111680
 
-# 训练
+# 只调节带bias的参数
+num_param = 0
+for name, param in model.named_parameters():
+    if "bias" not in name:
+        param.requires_grad = False
+    else:
+        num_param += param.numel()
+
+print(num_param) # 544768
+
 args = TrainingArguments(
-    output_dir="./HardPrompt",
+    output_dir="./BitFit",
     num_train_epochs=1,
-    per_device_train_batch_size=16,
+    per_device_train_batch_size=1,
     gradient_accumulation_steps=8,
     logging_steps=10,
+    save_steps=1
 )
 
 trainer = Trainer(
     model=model,
     args=args,
+    tokenizer=tokenizer,
     train_dataset=tokenized_datasets,
     data_collator=DataCollatorForSeq2Seq(tokenizer=tokenizer, padding=True),
 )
@@ -58,6 +61,6 @@ trainer = Trainer(
 trainer.train()
 
 # 预测
-pipeline = pipeline("text-generation",model=model, tokenizer=tokenizer, device=0)
+pipeline = pipeline("text-generation",model='model', tokenizer=tokenizer, device=0)
 ipt = "Human: {}\n{}".format("怎么学习自然语言处理", "").strip() + "\n\nAssistant: "
 print(pipeline(ipt, max_length=64))
