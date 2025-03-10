@@ -29,9 +29,8 @@ tokenized_datasets = dataset.map(preprocess_function, remove_columns=dataset.col
 
 model = AutoModelForCausalLM.from_pretrained("Langboat/bloom-1b4-zh", low_cpu_mem_usage=True)
 print(sum(param.numel() for param in model.parameters()))
-print(model)
 
-# Hard Prompt Tuning
+# Hard Prompt Tuning 与 Soft Prompt Tuning 的区别在于制定了一段文本作为Prompt，而Soft Prompt Tuning则是通过学习一个语言模型来生成Prompt。
 config = PromptTuningConfig(task_type=TaskType.CAUSAL_LM,num_virtual_tokens=len(tokenizer("下面是一段人与机器人的对话。")["input_ids"]),
                             prompt_tuning_init=PromptTuningInit.TEXT,prompt_tuning_init_text="下面是一段人与机器人的对话。",
                             tokenizer_name_or_path="Langboat/bloom-1b4-zh")
@@ -39,6 +38,7 @@ model = get_peft_model(model, config)
 print(model)
 print(model.print_trainable_parameters())
 
+# 训练
 args = TrainingArguments(
     output_dir="./HardPrompt",
     num_train_epochs=1,

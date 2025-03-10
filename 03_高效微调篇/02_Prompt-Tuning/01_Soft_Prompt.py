@@ -34,7 +34,6 @@ print(sum(param.numel() for param in model.parameters())) # 查看原始模型�
 config = PromptTuningConfig(task_type=TaskType.CAUSAL_LM,num_virtual_tokens=10)
 model = get_peft_model(model, config)
 print(model.print_trainable_parameters())
-print(model)
 '''
 可以看到经过Peft后基础模型外面加了一个PromptEmbedding
 PeftModelForCausalLM(
@@ -49,6 +48,7 @@ PeftModelForCausalLM(
 )
 '''
 
+# 训练
 args = TrainingArguments(
     output_dir="./SoftPrompt",
     num_train_epochs=1,
@@ -64,7 +64,7 @@ trainer = Trainer(
     data_collator=DataCollatorForSeq2Seq(tokenizer=tokenizer, padding=True),
 )
 
-# trainer.train()
+trainer.train()
 
 # 预测
 pipeline = pipeline("text-generation",model=model, tokenizer=tokenizer, device=0)
