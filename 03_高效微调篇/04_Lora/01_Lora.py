@@ -3,12 +3,14 @@ Author: Coder729
 Date: 2025/3/10
 Description: 
 """
-from peft import get_peft_model, TaskType, PromptTuningInit, PromptTuningConfig, PrefixTuningConfig, LoraConfig
+import torch
 from datasets import Dataset
-from transformers import AutoTokenizer,DataCollatorForSeq2Seq, \
+from peft import get_peft_model, TaskType, LoraConfig
+from transformers import AutoTokenizer, DataCollatorForSeq2Seq, \
     Trainer, TrainingArguments, AutoModelForCausalLM, pipeline
 
 dataset = Dataset.load_from_disk('../../02_实战演练篇/09_对话机器人/alpaca_data_zh')
+dataset = dataset.select([i for i in range(1000)]) # 取1000条数据进行训练
 tokenizer = AutoTokenizer.from_pretrained("Langboat/bloom-1b4-zh")
 
 def preprocess_function(examples):
@@ -29,17 +31,12 @@ tokenized_datasets = dataset.map(preprocess_function, remove_columns=dataset.col
 
 model = AutoModelForCausalLM.from_pretrained("Langboat/bloom-1b4-zh", low_cpu_mem_usage=True)
 print(sum(param.numel() for param in model.parameters())) # 1303111680
-print(model)
+# print(model)
 
 # Lora
 config = LoraConfig(task_type=TaskType.CAUSAL_LM, target_modules=".*\.1.*query_key_value", modules_to_save=["word_embeddings"]) # 正则表达式只应用于1和10~19层的query_key_value模块
 model = get_peft_model(model, config)
-print(model)
-'''
-可以看到(base_layer): Linear(in_features=2048, out_features=6144, bias=True) ----->
-(lora_A): ModuleDict((default): Linear(in_features=2048, out_features=8, bias=False))
-(lora_B): ModuleDict((default): Linear(in_features=8, out_features=6144, bias=False))
-'''
+# print(model)
 print(model.print_trainable_parameters())
 
 # 训练
@@ -49,7 +46,7 @@ args = TrainingArguments(
     per_device_train_batch_size=1,
     gradient_accumulation_steps=8,
     logging_steps=10,
-    save_steps=1,
+    save_steps=30,
 )
 
 trainer = Trainer(
@@ -60,9 +57,18 @@ trainer = Trainer(
     data_collator=DataCollatorForSeq2Seq(tokenizer=tokenizer, padding=True),
 )
 
-# trainer.train()
+trainer.train()
 
-# 预测
-pipeline = pipeline("text-generation",model=model, tokenizer=tokenizer, device=0)
-ipt = "Human: {}\n{}".format("人工智能是什么", "").strip() + "\n\nAssistant: "
-print(pipeline(ipt, max_length=64))
+# 在线预测
+model = model.cuda()
+input = tokenizer("Human: {}\n{}".format("人工智能是什么？", "").strip() + "\n\nAssistant: ", return_tensors="pt").to(model.device)
+print(tokenizer.decode(model.generate(**input, max_length=128, do_sample=True)[0], skip_special_tokens=True))
+
+# 离线预测
+offline_model = AutoModelForCausalLM.from_pretrained("./Lora/checkpoint-125") # 需要自己看自己的checkpoint路径
+offline_model = offline_model.to("cuda" if torch.cuda.is_available() else "cpu")
+input_text = "Human: 人工智能是什么？\n\nAssistant: "
+input_ids = tokenizer(input_text, return_tensors="pt").to(offline_model.device)
+output = model.generate(**input_ids,max_length=128,do_sample=True, )
+response = tokenizer.decode(output[0], skip_special_tokens=True)
+print(response)

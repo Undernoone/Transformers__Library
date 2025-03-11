@@ -51,6 +51,6 @@ trainer = Trainer(
 # trainer.train()
 
 # 预测
-pipeline = pipeline("text-generation",model='对话机器人/checkpoint-4', tokenizer=tokenizer, device=0)
+pipeline = pipeline("text-generation",model=model, tokenizer=tokenizer, device=0)
 ipt = "Human: {}\n{}".format("怎么学习自然语言处理", "").strip() + "\n\nAssistant: "
 print(pipeline(ipt, max_length=64))
