@@ -10,7 +10,7 @@ from transformers import AutoTokenizer, DataCollatorForSeq2Seq, \
     Trainer, TrainingArguments, AutoModelForCausalLM, pipeline
 
 dataset = Dataset.load_from_disk('../../02_实战演练篇/09_对话机器人/alpaca_data_zh')
-dataset = dataset.select([i for i in range(1000)]) # 取1000条数据进行训练
+dataset = dataset.select([i for i in range(1000)])
 tokenizer = AutoTokenizer.from_pretrained("Langboat/bloom-1b4-zh")
 
 def preprocess_function(examples):

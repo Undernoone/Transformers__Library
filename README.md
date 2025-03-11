@@ -61,7 +61,10 @@ root
 | BitFit        | [BitFit](03_高效微调篇/01_BitFit/BitFit.md)                  |          | 2025/3/09 |
 | Prompt-Tuning | [Prompt-Tuning](03_高效微调篇/02_Prompt-Tuning/Prompt-Tuning.md) |          | 2025/3/09 |
 | PreFix        | [PreFix](03_高效微调篇/03_PreFix/PreFix.md)                  |          | 2025/3/10 |
-| LoRA          | [LoRA](03_高效微调篇/04_LoRA/01_LoRA.md)                     |          | 2025/3/10 |
+| LoRA          | [LoRA](03_高效微调篇/04_LoRA/01_LoRA.md)  [合并模型](03_高效微调篇/04_LoRA/02_Merge_Model.md) |          | 2025/3/10 |
+| IA3           | [IA3](03_高效微调篇/05_IA3/IA3.md)                           |          | 2025/3/11 |
+| P-Tuning      | [P-Tuning](03_高效微调篇/06_P-Tuning/P-Tuning.md)            |          | 2025/3/11 |
+| PEFT进阶操作  | [PEFT进阶操作](03_高效微调篇/07_PEFT进阶操作/PEFT进阶操作.md) |          | 2025/3/11 |
 
 ## 扩展知识
 

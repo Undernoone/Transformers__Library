@@ -9,6 +9,7 @@ from transformers import AutoTokenizer,DataCollatorForSeq2Seq, \
     Trainer, TrainingArguments, AutoModelForCausalLM, pipeline
 
 dataset = Dataset.load_from_disk('../../02_实战演练篇/09_对话机器人/alpaca_data_zh')
+dataset = dataset.select([i for i in range(5000)])
 tokenizer = AutoTokenizer.from_pretrained("Langboat/bloom-1b4-zh")
 
 def preprocess_function(examples):
@@ -42,7 +43,7 @@ args = TrainingArguments(
     num_train_epochs=1,
     per_device_train_batch_size=4,
     gradient_accumulation_steps=8,
-    logging_steps=10,
+    logging_steps=50,
 )
 
 trainer = Trainer(
@@ -52,9 +53,9 @@ trainer = Trainer(
     data_collator=DataCollatorForSeq2Seq(tokenizer=tokenizer, padding=True),
 )
 
-# trainer.train()
+trainer.train()
 
 # 预测
-pipeline = pipeline("text-generation",model="D:\Study_Date\LLMs_study\Transformers库\\03_高效微调篇\\03_PreFix\HardPrompt\checkpoint-839", tokenizer=tokenizer, device=0)
-ipt = "Human: {}\n{}".format("怎么学习自然语言处理", "").strip() + "\n\nAssistant: "
-print(pipeline(ipt, max_length=64))
+model = model.cuda()
+input_text = tokenizer("Human: {}\n{}".format("考试有哪些技巧？", "").strip() + "\n\nAssistant: ", return_tensors="pt").to(model.device)
+print(tokenizer.decode(model.generate(**input_text, max_length=128, do_sample=True)[0], skip_special_tokens=True))
