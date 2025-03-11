@@ -1,24 +1,115 @@
-BloomForCausalLM(
-  (transformer): BloomModel(
-    (word_embeddings): Embedding(46145, 2048)
-    (word_embeddings_layernorm): LayerNorm((2048,), eps=1e-05, elementwise_affine=True)
-    (h): ModuleList(
-      (0-23): 24 x BloomBlock(
-        (input_layernorm): LayerNorm((2048,), eps=1e-05, elementwise_affine=True)
-        (self_attention): BloomAttention(
-          (query_key_value): Linear(in_features=2048, out_features=6144, bias=True)
-          (dense): Linear(in_features=2048, out_features=2048, bias=True)
-          (attention_dropout): Dropout(p=0.0, inplace=False)
+PeftModelForCausalLM(
+  (base_model): LoraModel(
+    (model): BloomForCausalLM(
+      (transformer): BloomModel(
+        (word_embeddings): ModulesToSaveWrapper(
+          (original_module): Embedding(46145, 2048)
+          (modules_to_save): ModuleDict(
+            (default): Embedding(46145, 2048)
+          )
         )
-        (post_attention_layernorm): LayerNorm((2048,), eps=1e-05, elementwise_affine=True)
-        (mlp): BloomMLP(
-          (dense_h_to_4h): Linear(in_features=2048, out_features=8192, bias=True)
-          (gelu_impl): BloomGelu()
-          (dense_4h_to_h): Linear(in_features=8192, out_features=2048, bias=True)
+        (word_embeddings_layernorm): LayerNorm((2048,), eps=1e-05, elementwise_affine=True)
+        (h): ModuleList(
+          (0): BloomBlock(
+            (input_layernorm): LayerNorm((2048,), eps=1e-05, elementwise_affine=True)
+            (self_attention): BloomAttention(
+              (query_key_value): Linear(in_features=2048, out_features=6144, bias=True)
+              (dense): Linear(in_features=2048, out_features=2048, bias=True)
+              (attention_dropout): Dropout(p=0.0, inplace=False)
+            )
+            (post_attention_layernorm): LayerNorm((2048,), eps=1e-05, elementwise_affine=True)
+            (mlp): BloomMLP(
+              (dense_h_to_4h): Linear(in_features=2048, out_features=8192, bias=True)
+              (gelu_impl): BloomGelu()
+              (dense_4h_to_h): Linear(in_features=8192, out_features=2048, bias=True)
+            )
+          )
+          (1): BloomBlock(
+            (input_layernorm): LayerNorm((2048,), eps=1e-05, elementwise_affine=True)
+            (self_attention): BloomAttention(
+              (query_key_value): lora.Linear(
+                (base_layer): Linear(in_features=2048, out_features=6144, bias=True)
+                (lora_dropout): ModuleDict(
+                  (default): Identity()
+                )
+                (lora_A): ModuleDict(
+                  (default): Linear(in_features=2048, out_features=8, bias=False)
+                )
+                (lora_B): ModuleDict(
+                  (default): Linear(in_features=8, out_features=6144, bias=False)
+                )
+                (lora_embedding_A): ParameterDict()
+                (lora_embedding_B): ParameterDict()
+              )
+              (dense): Linear(in_features=2048, out_features=2048, bias=True)
+              (attention_dropout): Dropout(p=0.0, inplace=False)
+            )
+            (post_attention_layernorm): LayerNorm((2048,), eps=1e-05, elementwise_affine=True)
+            (mlp): BloomMLP(
+              (dense_h_to_4h): Linear(in_features=2048, out_features=8192, bias=True)
+              (gelu_impl): BloomGelu()
+              (dense_4h_to_h): Linear(in_features=8192, out_features=2048, bias=True)
+            )
+          )
+          (2-9): 8 x BloomBlock(
+            (input_layernorm): LayerNorm((2048,), eps=1e-05, elementwise_affine=True)
+            (self_attention): BloomAttention(
+              (query_key_value): Linear(in_features=2048, out_features=6144, bias=True)
+              (dense): Linear(in_features=2048, out_features=2048, bias=True)
+              (attention_dropout): Dropout(p=0.0, inplace=False)
+            )
+            (post_attention_layernorm): LayerNorm((2048,), eps=1e-05, elementwise_affine=True)
+            (mlp): BloomMLP(
+              (dense_h_to_4h): Linear(in_features=2048, out_features=8192, bias=True)
+              (gelu_impl): BloomGelu()
+              (dense_4h_to_h): Linear(in_features=8192, out_features=2048, bias=True)
+            )
+          )
+          (10-19): 10 x BloomBlock(
+            (input_layernorm): LayerNorm((2048,), eps=1e-05, elementwise_affine=True)
+            (self_attention): BloomAttention(
+              (query_key_value): lora.Linear(
+                (base_layer): Linear(in_features=2048, out_features=6144, bias=True)
+                (lora_dropout): ModuleDict(
+                  (default): Identity()
+                )
+                (lora_A): ModuleDict(
+                  (default): Linear(in_features=2048, out_features=8, bias=False)
+                )
+                (lora_B): ModuleDict(
+                  (default): Linear(in_features=8, out_features=6144, bias=False)
+                )
+                (lora_embedding_A): ParameterDict()
+                (lora_embedding_B): ParameterDict()
+              )
+              (dense): Linear(in_features=2048, out_features=2048, bias=True)
+              (attention_dropout): Dropout(p=0.0, inplace=False)
+            )
+            (post_attention_layernorm): LayerNorm((2048,), eps=1e-05, elementwise_affine=True)
+            (mlp): BloomMLP(
+              (dense_h_to_4h): Linear(in_features=2048, out_features=8192, bias=True)
+              (gelu_impl): BloomGelu()
+              (dense_4h_to_h): Linear(in_features=8192, out_features=2048, bias=True)
+            )
+          )
+          (20-23): 4 x BloomBlock(
+            (input_layernorm): LayerNorm((2048,), eps=1e-05, elementwise_affine=True)
+            (self_attention): BloomAttention(
+              (query_key_value): Linear(in_features=2048, out_features=6144, bias=True)
+              (dense): Linear(in_features=2048, out_features=2048, bias=True)
+              (attention_dropout): Dropout(p=0.0, inplace=False)
+            )
+            (post_attention_layernorm): LayerNorm((2048,), eps=1e-05, elementwise_affine=True)
+            (mlp): BloomMLP(
+              (dense_h_to_4h): Linear(in_features=2048, out_features=8192, bias=True)
+              (gelu_impl): BloomGelu()
+              (dense_4h_to_h): Linear(in_features=8192, out_features=2048, bias=True)
+            )
+          )
         )
+        (ln_f): LayerNorm((2048,), eps=1e-05, elementwise_affine=True)
       )
+      (lm_head): Linear(in_features=2048, out_features=46145, bias=False)
     )
-    (ln_f): LayerNorm((2048,), eps=1e-05, elementwise_affine=True)
   )
-  (lm_head): Linear(in_features=2048, out_features=46145, bias=False)
 )
