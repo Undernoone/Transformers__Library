@@ -42,7 +42,7 @@ model = model.half() # peft后loraA和loraB还是float32，需要改成float16
 
 # 训练
 args = TrainingArguments(
-    output_dir="./01_半精度训练",
+    output_dir="./01_Llama_半精度训练",
     num_train_epochs=1,
     per_device_train_batch_size=1,
     gradient_accumulation_steps=8,
@@ -56,7 +56,7 @@ trainer = Trainer(
     model=model,
     args=args,
     tokenizer=tokenizer,
-    train_dataset=tokenized_datasets.select(range(50)),
+    train_dataset=tokenized_datasets.select(range(500)),
     data_collator=DataCollatorForSeq2Seq(tokenizer=tokenizer, padding=True),
 )
 trainer.train()
@@ -65,4 +65,4 @@ trainer.train()
 a = 10
 print(a)
 ipt = tokenizer("Human: {}\n{}".format("你好", "").strip() + "\n\nAssistant: ", return_tensors="pt").to(model.device)
-tokenizer.decode(model.generate(**ipt, max_length=512, do_sample=True, eos_token_id=tokenizer.eos_token_id)[0], skip_special_tokens=True)
+print(tokenizer.decode(model.generate(**ipt, max_length=512, do_sample=True, eos_token_id=tokenizer.eos_token_id)[0], skip_special_tokens=True))
