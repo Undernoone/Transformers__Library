@@ -1,6 +1,6 @@
 """
 Author: Coder729
-Date: 2025/3/13
+Date: 2025/3/14
 Description: 
 """
 import torch
@@ -52,7 +52,9 @@ else:
 ```
 如果不进行调整，后续chat阶段会报错
 """
-model = AutoModel.from_pretrained("THUDM/chatglm3-6b", trust_remote_code=True, torch_dtype=torch.bfloat16)
+
+model = AutoModel.from_pretrained("THUDM/chatglm3-6b", trust_remote_code=True, low_cpu_mem_usage=True,
+                                  torch_dtype=torch.bfloat16, device_map="auto", load_in_8bit=True)
 print(model)
 for name, param in model.named_parameters():
     print(name)
@@ -66,7 +68,7 @@ for name, parameter in model.named_parameters():
 model.print_trainable_parameters()
 
 args = TrainingArguments(
-    output_dir="./02_ChatGLM_半精度训练",
+    output_dir="./量化和8bit训练",
     per_device_train_batch_size=1,
     gradient_accumulation_steps=8,
     logging_steps=10,
@@ -81,12 +83,12 @@ args = TrainingArguments(
 trainer = Trainer(
     model=model,
     args=args,
-    train_dataset=tokenized_dataset.select(range(6000)),
+    train_dataset=tokenized_dataset.select(range(10)),
     data_collator=DataCollatorForSeq2Seq(tokenizer=tokenizer, padding=True),
 )
 
 trainer.train()
 
 # 推理
-model.eval()
-print(tokenizer.build_chat_input("考试的技巧有哪些？", history=[], role="user"))
+ipt = tokenizer("Human: {}\n{}".format("人工智能是什么？", "").strip() + "\n\nAssistant: ", return_tensors="pt").to(model.device)
+print(tokenizer.decode(model.generate(**ipt, max_length=512, do_sample=True, eos_token_id=tokenizer.eos_token_id)[0], skip_special_tokens=True))

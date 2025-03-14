@@ -5,7 +5,7 @@ Description:
 """
 import torch
 from datasets import Dataset
-from peft import get_peft_model, TaskType, LoraConfig
+from peft import get_peft_model, TaskType, LoraConfig, LoraModel
 from transformers import AutoTokenizer, DataCollatorForSeq2Seq, \
     Trainer, TrainingArguments, AutoModelForCausalLM, pipeline
 
