@@ -31,12 +31,12 @@ tokenized_datasets = dataset.map(preprocess_function, remove_columns=dataset.col
 
 model = AutoModelForCausalLM.from_pretrained("Langboat/bloom-1b4-zh", low_cpu_mem_usage=True)
 print(sum(param.numel() for param in model.parameters())) # 1303111680
-# print(model)
+print(model)
 
 # Lora
 config = LoraConfig(task_type=TaskType.CAUSAL_LM, target_modules=".*\.1.*query_key_value", modules_to_save=["word_embeddings"]) # 正则表达式只应用于1和10~19层的query_key_value模块
 model = get_peft_model(model, config)
-# print(model)
+print(model)
 print(model.print_trainable_parameters())
 
 # 训练

@@ -56,12 +56,12 @@ trainer = Trainer(
     model=model,
     args=args,
     tokenizer=tokenizer,
-    train_dataset=tokenized_datasets.select(range(500)),
+    train_dataset=tokenized_datasets.select,
     data_collator=DataCollatorForSeq2Seq(tokenizer=tokenizer, padding=True),
 )
 trainer.train()
 
 # model.eval()
 
-ipt = tokenizer("Human: {}\n{}".format("你好", "").strip() + "\n\nAssistant: ", return_tensors="pt").to(model.device)
-print(tokenizer.decode(model.generate(**ipt, max_length=512, do_sample=True, eos_token_id=tokenizer.eos_token_id)[0], skip_special_tokens=True))
+input = tokenizer("Human: {}\n{}".format("人工智能是什么？", "").strip() + "\n\nAssistant: ", return_tensors="pt").to(model.device)
+print(tokenizer.decode(model.generate(**input, max_length=512, do_sample=True, eos_token_id=tokenizer.eos_token_id)[0], skip_special_tokens=True))

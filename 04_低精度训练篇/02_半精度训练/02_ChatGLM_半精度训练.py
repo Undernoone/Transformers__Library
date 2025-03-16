@@ -83,7 +83,7 @@ args = TrainingArguments(
 trainer = Trainer(
     model=model,
     args=args,
-    train_dataset=tokenized_dataset.select(range(6000)),
+    train_dataset=tokenized_dataset.select,
     data_collator=DataCollatorForSeq2Seq(tokenizer=tokenizer, padding=True),
 )
 
